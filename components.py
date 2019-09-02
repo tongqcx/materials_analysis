@@ -49,6 +49,6 @@ class Components(object):
         Return:
             name: the reduced formula  for example AlMgO3
             n_formula:                             2
-            Name:                                  {Al:2, Mg:2, O:6}
-            Na: the number of atoms                10
+            Name:                                  {Al:1, Mg:1, O:3}
+            Na: the number of atoms                5
         """   
