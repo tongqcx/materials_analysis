@@ -23,5 +23,5 @@ class Components(object):
     def print_info(self):
         f = open('component_info.dat', 'w')
         for iu in self.energy:
-            f.write('%s  %15.10f\n' % (iu, self.energy[iu], self.spacegroup[iu]))
+            f.write('%s  %15.10f  %s\n' % (iu, self.energy[iu], self.spacegroup[iu]))
         f.close()
