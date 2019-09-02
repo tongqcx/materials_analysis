@@ -3,3 +3,4 @@ The aim of this package is to analysis the materials information extracted from 
 ## Requires:
     * Pymatgen
     * Scipy
+    * Numpy
