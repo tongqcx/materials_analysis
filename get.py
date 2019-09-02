@@ -4,7 +4,9 @@ from pymatgen.analysis.phase_diagram import PhaseDiagram, PDPlotter
 import collections
 import sys, os
 import time
+from components import Components
 
+Comps = Components()
 os.system('rm -rf structure; mkdir structure')
 
 ChemicalSymbols = [ 'H',  'He', 'Li', 'Be','B',  'C',  'N',  'O',  'F',
@@ -39,7 +41,8 @@ def get_formula(x, y, z):
     return formula
 
 #comps = get_formula(M, A, X)
-comps=[['Mg', 'Al', 'O']]
+comps=[['Sc', 'Al', 'C']]
+#comps=[['N']]
 f=open('in.txt','w')
 fcsv=open('id_prop.csv','w')
 mpr = MPRester("7UnVyVXyetJ5WK3r")
@@ -58,28 +61,26 @@ for comp in comps:
         #print(e)
         #print(type(e))
         #print(e.energy)
-        print(e.entry_id, e.composition, e.energy)
-        continue
-        sys.exit(0)
-#        ehull = pd.get_e_above_hull(e)
-#        if ehull < 0.00000001 :
+        #print(e.entry_id, e.composition, e.energy, e.attribute)
+        #continue
+        #sys.exit(0)
+        #ehull = pd.get_e_above_hull(e)
+        #if ehull < 0.00000001 :
         com = e.entry_id
-        start_time = time.time()
         prop = mpr.query(criteria={"task_id": com}, properties=[\
         "formation_energy_per_atom", \
         "energy_per_atom", \
         "spacegroup", \
         "pretty_formula", \
         "cif"])
-        end_time = time.time()
-        run_time = end_time - start_time
-        print('run_time', run_time)
 
         form_energy =  prop[0]['formation_energy_per_atom']
         energy =  prop[0]['energy_per_atom']
         sp =  prop[0]['spacegroup']['symbol']
         name =  prop[0]['pretty_formula']
         struct = prop[0]['cif']
+        Comps.add_component(name, energy)
+
 
         fcif = open('./structure/' + com + '_' + name + '.cif','w')
         fcif.write(struct)
@@ -89,4 +90,5 @@ for comp in comps:
         fcsv.write(com + '_' + name + ',  ' + str(energy) + '  ' + str(form_energy) + '  ' + str(sp) + '\n')
 f.close()
 fcsv.close()
+Comps.print_info()
 
