@@ -2,6 +2,7 @@ import string
 from functools import reduce
 import re
 import sys
+import time
 class Components(object):
 
     def __init__(self):
@@ -46,9 +47,9 @@ class Components(object):
         for iu in self.energy:
             self.formation_energy[iu] = self.energy[iu] * self.Na[iu]
             for ju in self.Name[iu]:
-                print(iu)
-                print(self.Name[iu])
-                print(ju, ju[:-1])
+#                print(iu)
+#                print(self.Name[iu])
+#                print(ju, ju[:-1])
                 self.formation_energy[iu] -= self.Name[iu][ju] * self.energy[ju + '1']
 
         return self.formation_energy
@@ -83,12 +84,9 @@ class Components(object):
             Name:                                  {Al:1, Mg:1, O:3}
             Na: the number of atoms                5
         """           
-        ccc=(struct.split('\n'))
-        line=(ccc[11])
+        line=struct.split('\n')[11]
         if '_chemical_formula_sum' in line :
-            a=(line.split('   '))
-            a=a[1]
-            a=a.strip()
+            a=(line.split('   '))[1].strip()
             if a[0] == "'" :
                 a=eval(a)
             b=a.split(' ')
@@ -100,7 +98,6 @@ class Components(object):
                 element1.append(s)
                 num=" ".join(num)
                 numbers.append(num)
-
             n=self._numbersss(numbers)
             reduce_for=[]
             total=0
@@ -108,7 +105,7 @@ class Components(object):
             for i in range(len(b)):
                 dic[element1[i]]=int(int(numbers[i])/int(n))         
                 reduce_for.append(element1[i])
-                red=(int(int(numbers[i])/int(n)))
+                red=(int(int(numbers[i])/n))
                 red1=str(red)
                 total+= red
                 reduce_for.append(red1)
