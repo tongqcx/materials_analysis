@@ -51,19 +51,19 @@ def numbersss(numbers):
     if len(numbers) == 1:
         return 1
 
-    elif len(numbers) == 2 :
-        a = int(numbers[0])
-        b = int(numbers[1])
-        if a>b:
-            t = a
-            a = b
-            b = t
-        for n  in range(1,1+(a)):
-            if (a)%n==0 and (b)%n==0:
-                i = [n]
-                i.sort()
-        return i[-1]
-
+#    elif len(numbers) == 2 :
+#        a = int(numbers[0])
+#        b = int(numbers[1])
+#        if a>b:
+#            t = a
+#            a = b
+#            b = t
+#        for n  in range(1,1+(a)):
+#            if (a)%n==0 and (b)%n==0:
+#                i = [n]
+#                i.sort()
+#        return i[-1]
+#
     else:            #len(numbers) > 2:
         mx = int(reduce(lambda x ,y: max(x,y),numbers))
         while True:
@@ -122,12 +122,12 @@ for comp in comps:
         struct = prop[0]['cif']
 
 
-        ccc=(struct.split('\n'))
-        line=(ccc[11])
+        line=(struct.split('\n')[11])
+        #line=(ccc[11])
         if '_chemical_formula_sum' in line :
-            a=(line.split('   '))
-            a=a[1]
-            a=a.strip()
+            a=line.split('   ')[1].strip()
+            #a=a[1]
+            #a=a.strip()
             if a[0] == "'" :
                 a=eval(a)
             b=a.split(' ')

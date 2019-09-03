@@ -50,22 +50,8 @@ class Components(object):
         Find the greatest common divisor
         """
         if len(numbers) == 1:
-            return 1
-     
-        elif len(numbers) == 2 :
-            a = int(numbers[0])
-            b = int(numbers[1])
-            if a>b:
-                t = a
-                a = b
-                b = t
-            for n  in range(1,1+(a)):
-                if (a)%n==0 and (b)%n==0:
-                    i = [n]
-                    i.sort()
-            return i[-1]
-
-     
+            
+            return int(numbers[0]) 
         else:            
             mx = int(reduce(lambda x ,y: max(x,y),numbers))
             while True:
@@ -106,6 +92,7 @@ class Components(object):
                 element1.append(s)
                 num=" ".join(num)
                 numbers.append(num)
+
             n=self._numbersss(numbers)
             reduce_for=[]
             total=0
@@ -118,5 +105,5 @@ class Components(object):
                 total+= red
                 reduce_for.append(red1)
             reduce_for1=(" ".join(reduce_for)) 
-            reduce_for1=reduce_for1.replace(' ','')                  #(
+            reduce_for1=reduce_for1.replace(' ','')                  
             return (reduce_for1,n,dic,total) 
