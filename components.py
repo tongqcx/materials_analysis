@@ -1,6 +1,7 @@
 import string
 from functools import reduce
 import re
+import sys
 class Components(object):
 
     def __init__(self):
@@ -8,6 +9,7 @@ class Components(object):
         self.spacegroup = {}
         self.Na = {}
         self.Name = {}
+        self.Cif_name = {}
 
     def get_energy(self, name):
         return self.energy[name]
@@ -15,7 +17,7 @@ class Components(object):
     def get_spacegroup(self, name):
         return self.spacegroup[name]
 
-    def add_component(self, name, add_energy, spacegroup,struc):
+    def add_component(self, name, add_energy, spacegroup, struc, cif_name):
         name, n_formula, Name, Na = self._get_natoms(struc)  
         print(name, n_formula, Name, Na)
         if name in self.energy:
@@ -24,25 +26,31 @@ class Components(object):
                 self.spacegroup[name] = spacegroup
                 self.Na[name] = Na
                 self.Name[name] = Name
+                self.Cif_name[name] = cif_name
         else:
             self.energy[name] = add_energy
             self.spacegroup[name] = spacegroup
             self.Na[name] = Na
             self.Name[name] = Name
+            self.Cif_name[name] = cif_name
             
             
     def print_info(self):
         f = open('component_info.dat', 'w')
         for iu in self.energy:
-            f.write('%s  %15.10f  %s\n' % (iu, self.energy[iu], self.spacegroup[iu]))
+            f.write('%s  %15.10f %15.10f  %s  %s\n' % (iu, self.formation_energy[iu], self.energy[iu], self.spacegroup[iu], self.Cif_name[iu]))
         f.close()
 
     def get_formation_energy(self):
         self.formation_energy = {}
         for iu in self.energy:
             self.formation_energy[iu] = self.energy[iu] * self.Na[iu]
-            for ju in self.Name:
-                self.formation_energy[iu] -= self.Name[iu][ju] * self.energy[ju]
+            for ju in self.Name[iu]:
+                print(iu)
+                print(self.Name[iu])
+                print(ju, ju[:-1])
+                self.formation_energy[iu] -= self.Name[iu][ju] * self.energy[ju + '1']
+
         return self.formation_energy
 
     def _numbersss(self,numbers):

@@ -20,17 +20,16 @@ ChemicalSymbols = [ 'H',  'He', 'Li', 'Be','B',  'C',  'N',  'O',  'F',
                     'Hg', 'Tl', 'Pb', 'Bi', 'Po','At', 'Rn', 'Fr', 'Ra', 'Ac',
                     'Th', 'Pa', 'U',  'Np', 'Pu','Am', 'Cm', 'Bk', 'Cf', 'Es',
                     'Fm', 'Md', 'No', 'Lr']
-M = ['Sc', 'Ti', 'V', 'Cr', 'Mn',
-     'Zr', 'Nb', 'Mo', 
-     'Hf', 'Ta', 'W']
-A = ['Al', 'Si', 'P', 'S',
-     'Ga', 'Ge', 'As',
-     'Cd', 'In', 'Sn',
-     'Ti', 'Pb']
-X = ['H',
-     'B', 'C', 'N', 'O', 'F',
-     'Si', 'P', 'S', 'Cl',
-     'Br']
+#M = ['Sc', 'Ti', 'V', 'Cr', 'Mn',
+#     'Zr', 'Nb', 'Mo', 
+#     'Hf', 'Ta', 'W']
+#A = ['Al', 'Si', 'P', 'S',
+#     'Ga', 'Ge', 'As',
+#     'Cd', 'In', 'Sn',
+#     'Ti', 'Pb']
+M = ['Sc']
+A = ['Al']
+X = ['B', 'C', 'N']
 
 def get_formula(x, y, z):
     formula = []
@@ -40,11 +39,9 @@ def get_formula(x, y, z):
                 formula.append([ix, iy, iz])
     return formula
 
-#comps = get_formula(M, A, X)
-comps=[['Sc', 'Al', 'C']]
+comps = get_formula(M, A, X)
+#comps=[['Sc', 'Al', 'N']]
 #comps=[['N']]
-f=open('in.txt','w')
-fcsv=open('id_prop.csv','w')
 mpr = MPRester("7UnVyVXyetJ5WK3r")
 
 for comp in comps:
@@ -58,14 +55,6 @@ for comp in comps:
 #    pd = PhaseDiagram(entries)
 #    data = collections.defaultdict(list)
     for e in entries:
-        #print(e)
-        #print(type(e))
-        #print(e.energy)
-        #print(e.entry_id, e.composition, e.energy, e.attribute)
-        #continue
-        #sys.exit(0)
-        #ehull = pd.get_e_above_hull(e)
-        #if ehull < 0.00000001 :
         com = e.entry_id
         prop = mpr.query(criteria={"task_id": com}, properties=[\
         "formation_energy_per_atom", \
@@ -79,16 +68,12 @@ for comp in comps:
         sp =  prop[0]['spacegroup']['symbol']
         name =  prop[0]['pretty_formula']
         struct = prop[0]['cif']
-        Comps.add_component(name, energy, sp,struct)
+        cif_name = './structure/' + com + '_' + name + '.cif'
+        Comps.add_component(name, energy, sp,struct, cif_name)
 
-
-        fcif = open('./structure/' + com + '_' + name + '.cif','w')
+        fcif = open(cif_name, 'w')
         fcif.write(struct)
         fcif.close()
-        f.write('%s  ' % name)
-        f.write('%15.10f       %s\n' % (energy, com))
-        fcsv.write(com + '_' + name + ',  ' + str(energy) + '  ' + str(form_energy) + '  ' + str(sp) + '\n')
-f.close()
-fcsv.close()
+Comps.get_formation_energy()
 Comps.print_info()
 
