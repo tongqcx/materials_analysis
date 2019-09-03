@@ -79,7 +79,7 @@ for comp in comps:
         sp =  prop[0]['spacegroup']['symbol']
         name =  prop[0]['pretty_formula']
         struct = prop[0]['cif']
-        Comps.add_component(name, energy, sp)
+        Comps.add_component(name, energy, sp,struct)
 
 
         fcif = open('./structure/' + com + '_' + name + '.cif','w')
